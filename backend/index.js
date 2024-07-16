@@ -5,9 +5,6 @@ const cors = require("cors");
 const mainroute=require("./Routes/index")
 const app = express();
 config();
-app.get("/", (req, res) => {
-  res.send("heiii");
-});
 
 connectDB();
 

@@ -1,10 +1,12 @@
 const express = require("express");
 const User = require("../Models/User");
+const Account = require("../Models/accountModel");
 const router = express.Router();
 const { JWT_SECRET, JWT_EXPIRY } = require("../Config/config");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../Middleware/authMiddleware");
 const zod = require("zod");
+
 router.post("/signup", async (req, res, next) => {
   try {
     const { username, password, firstName, lastName } = req.body;
@@ -15,6 +17,13 @@ router.post("/signup", async (req, res, next) => {
     }
     const user = new User({ username, password, firstName, lastName });
     await user.save();
+
+    const userId = user._id;
+    await Account.create({
+      userId,
+      balance: 1 + Math.random() * 10000,
+    });
+
     const token = jwt.sign({ id: user._id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRY,
       algorithm: "HS256",
@@ -85,30 +94,28 @@ router.put("/update", authMiddleware, async (req, res) => {
   }
 });
 
-//filter user based on name 
-router.get('/bulk', async (req,res)=>{
-const filter=req.query.filter||""
-const users=await User.find({
-  $or:[
-    {
-      firstName:{'$regex':filter}
-    },
-    {
-      lastName:{'$regex':filter}
-    }
-  ]
-})
+//filter user based on name
+router.get("/bulk", async (req, res) => {
+  const filter = req.query.filter || "";
+  const users = await User.find({
+    $or: [
+      {
+        firstName: { $regex: filter },
+      },
+      {
+        lastName: { $regex: filter },
+      },
+    ],
+  });
 
-res.json({
-  user: users.map(user => ({
+  res.json({
+    user: users.map((user) => ({
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
-      _id: user._id
-  }))
-})
-})
-
-
+      _id: user._id,
+    })),
+  });
+});
 
 module.exports = router;
