@@ -10,7 +10,7 @@ const UserCard = React.memo(({ user }) => {
   return (
     <Card className="flex flex-col items-center gap-4 p-4">
       <Avatar className="w-16 h-16 bg-primary text-primary-foreground font-bold">
-        <AvatarFallback className="w-16 h-16 bg-primary text-primary-foreground font-bold">
+        <AvatarFallback className="w-16 h-16 bg-gray-500 text-primary-foreground font-bold">
           {user.firstName[0]}
           {user.lastName[0]}
         </AvatarFallback>

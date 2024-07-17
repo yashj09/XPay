@@ -56,7 +56,7 @@ const Sendmoney = () => {
                     },
                   }
                 );
-                alert("send " + amount + "rs to " + name);
+                alert("send " + amount + "$ to " + name);
                 navigate("/dashboard");
               }}
             >
