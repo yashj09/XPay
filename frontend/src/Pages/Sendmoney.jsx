@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Card,
@@ -16,7 +17,7 @@ const Sendmoney = () => {
   const [amount, setAmount] = useState(0);
   const id = searchParams.get("id");
   const name = searchParams.get("name");
-
+  const navigate = useNavigate();
   return (
     <div className="flex justify-center items-center h-[100dvh]">
       <Card className="w-full max-w-sm  ">
@@ -56,6 +57,7 @@ const Sendmoney = () => {
                   }
                 );
                 alert("send " + amount + "rs to " + name);
+                navigate("/dashboard");
               }}
             >
               Send
